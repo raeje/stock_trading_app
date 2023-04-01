@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   def authorize_request
     # Get Authorization from request headers
     header = request.headers['Authorization']
-    header&.slice!(/(.*)?/)
+    header&.slice!(/(.* )?/)
 
     # Decode token
     # Throw errors if record not found or error at decoding token
@@ -24,5 +24,11 @@ class ApplicationController < ActionController::Base
     rescue JWT::DecodeError => e
       render json: { errors: e.message }, status: :unauthorized
     end
+  end
+
+  def authorize_admin_action
+    return if @current_user.role == 'admin' && @current_user.is_approved
+
+    render(json: { errors: ['Account not authorized to perform this action.'] }, status: :unauthorized)
   end
 end

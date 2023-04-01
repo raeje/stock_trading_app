@@ -22,10 +22,14 @@ class User < ApplicationRecord
   include BCrypt
 
   validates(:email, presence: true, uniqueness: true)
-  validates(:password, presence: true)
+  validates(:password, presence: true, if: :password)
 
   def self.encrypt_password(user_params)
     password_hash = Password.create(user_params[:password])
     create(email: user_params[:email], password: password_hash)
+  end
+
+  def admin?
+    self.role == 'admin'
   end
 end

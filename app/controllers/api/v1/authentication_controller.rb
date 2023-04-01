@@ -8,6 +8,7 @@ module Api
   module V1
     # app/controllers/api/v1/authorization_controller.rb
     class AuthenticationController < ApplicationController
+      # Protect from cross site request forgery
       protect_from_forgery with: :null_session
       before_action :authorize_request, except: %i[signup login]
 
@@ -32,7 +33,7 @@ module Api
       # PUT /login
       # Enable user log in, returns token
       def login
-        @user =  User.find_by_email(params[:email])
+        @user = User.find_by_email(params[:email])
 
         # Check if email or password is empty
         if params[:email].to_s.empty? || params[:password].to_s.empty?

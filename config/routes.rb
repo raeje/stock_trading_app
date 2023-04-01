@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       # Users
       get 'users' => 'users#index'
+      patch 'update/:id' => 'users#update'
 
       # Authentication
       post 'signup' => 'authentication#signup'
