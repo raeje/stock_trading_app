@@ -12,7 +12,7 @@ gem "rails", "~> 7.0.4", ">= 7.0.4.3"
 gem "font-awesome-sass", "~> 6.3.0"
 
 # For user auth
-gem 'bcrypt', '~> 3.1', '>= 3.1.12'
+gem 'bcrypt', '>= 3.1.7'
 gem 'jwt'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -15,7 +17,15 @@
 #  updated_at      :datetime         not null
 #
 class User < ApplicationRecord
+  # Add methods to set and authenticate against a BCrypt password.
+  has_secure_password
+  include BCrypt
+
   validates(:email, presence: true, uniqueness: true)
   validates(:password, presence: true)
 
+  def self.encrypt_password(user_params)
+    password_hash = Password.create(user_params[:password])
+    create(email: user_params[:email], password: password_hash)
+  end
 end
