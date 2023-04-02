@@ -3,6 +3,15 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.1"
 
+# IEX Stock API
+gem 'iex-ruby-client'
+
+# HTTP/Rest client gem for accessing the url for external api via get request.
+gem 'rest-client'
+
+# Hide environment variables
+gem 'dotenv-rails'
+
 #gem "tailwindcss-rails", "~> 2.0"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
