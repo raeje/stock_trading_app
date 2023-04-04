@@ -1,0 +1,3 @@
+batch_stock_quote_job:
+  cron: "*/1 * * * *"
+  class: "BatchStockQuoteJob"

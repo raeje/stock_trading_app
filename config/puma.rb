@@ -41,3 +41,23 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
+
+on_worker_boot do
+  x = Sidekiq.configure_embed do |config|
+    Sidekiq.schedule = {
+      'scheduled_job' => {
+        "cron"        => "*/1 * * * *",
+        "class"       => 'BatchStockQuoteJob'
+      }
+    }
+
+    config.logger.level = Logger::DEBUG
+    config.queues = %w[critical default mailers]
+    config.concurrency = 2
+  end
+  x.run
+end
+
+on_worker_shutdown do
+  x&.stop
+end

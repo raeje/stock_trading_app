@@ -15,4 +15,40 @@
 #
 # app/models/stock.rb
 class Stock < ApplicationRecord
+  def iex_api_key
+    ENV['IEX_API_PUBLISHABLE_TOKEN']
+  end
+
+  def self.quote(ticker)
+    api_data = { key: ENV['IEX_API_PUBLISHABLE_TOKEN'] }
+    quote = RestClient.get("https://api.iex.cloud/v1/data/core/quote/#{ticker}?token=#{api_data[:key]}")
+    JSON.parse(quote)[0]
+  end
+
+  def self.latest_price(ticker)
+    start_time = Time.now
+    api_data = { key: ENV['IEX_API_PUBLISHABLE_TOKEN'] }
+    quote = RestClient.get("https://api.iex.cloud/v1/data/core/quote/#{ticker}?token=#{api_data[:key]}")
+    ticker_quote = JSON.parse(quote)[0]
+    ticker_quote['latestPrice']
+    { latest_price: ticker_quote['latestPrice'], elapsed: Time.now - start_time }
+  end
+
+  def self.monitor_price(ticker, limit)
+    start_time = Time.now
+    for i in 1..limit do
+      p i
+      p latest_price(ticker)
+    end
+    { elapsed: Time.now - start_time }
+  end
+
+  def self.quote_all(limit)
+    start_time = Time.now
+    batch = limit(limit).pluck(:ticker).join(',')
+
+    api_data = { key: ENV['IEX_API_PUBLISHABLE_TOKEN'] }
+    quote = RestClient.get("https://api.iex.cloud/v1/data/core/quote/#{batch}?token=#{api_data[:key]}")
+    JSON.parse(quote)
+  end
 end

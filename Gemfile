@@ -14,6 +14,11 @@ gem 'dotenv-rails'
 
 #gem "tailwindcss-rails", "~> 2.0"
 
+# Handle background jobs
+gem 'sidekiq'
+gem 'sidekiq-cron'
+gem 'sidekiq-scheduler'
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4", ">= 7.0.4.3"
 
