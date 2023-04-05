@@ -14,14 +14,14 @@
 #  updated_at        :datetime         not null
 #
 class Stock < ApplicationRecord
-  scope :find_id_by_ticker, ->(ticker) { where('ticker = ?', ticker).pluck(:id)[0] }
+  # scope :find_id_by_ticker, ->(ticker) { where('ticker = ?', ticker).pluck(:id)[0] }
 
   def iex_api_key
     ENV['IEX_API_PUBLISHABLE_TOKEN']
   end
 
-  def self.find_first
-    :stocks_id == 1
+  def self.find_id_by_ticker(ticker)
+    where('ticker = ?', ticker).pluck(:id)[0]
   end
 
   def self.quote(ticker)

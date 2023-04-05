@@ -25,8 +25,8 @@ class Order < ApplicationRecord
   scope :placed_buy, -> { placed.where(category: 'buy') }
   scope :placed_sell, -> { placed.where(category: 'sell') }
 
-  def self.fulfill(stocks_id, price)
-    orders = placed_buy.where(['stocks_id = ? and price <= ?', stocks_id, price])
+  def self.fulfill(price)
+    orders = placed_buy.where(['price <= ?', price])
     orders.update_all(status: 'fulfilled')
   end
 end

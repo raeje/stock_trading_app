@@ -13,10 +13,11 @@ class BatchStockQuoteJob
     quotes = iex_latest_price
     quotes.each do |stock|
       db_stock_id = Stock.find_id_by_ticker(stock['symbol'])
-      orders = affected_orders(db_stock_id).length
-      affected_orders(db_stock_id).fulfill(db_stock_id, stock['latestPrice'])
+      orders = affected_orders(db_stock_id)
+      orders.fulfill(stock['latestPrice'])
+
       gap = ' ' * (SPACES_LENGTH - stock['symbol'].length)
-      p "  id: #{db_stock_id} orders: #{orders} #{stock['symbol']}#{gap}#{stock['latestPrice']}"
+      p "  id: #{db_stock_id} orders: #{orders.length} #{stock['symbol']}#{gap}#{stock['latestPrice']}"
     end
 
     p "  Elapsed: #{Time.now - start_time}"
