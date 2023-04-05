@@ -4,7 +4,7 @@
 class CreateStocks < ActiveRecord::Migration[7.0]
   def change
     create_table :stocks do |t|
-      t.string :ticker
+      t.string :ticker, null: false
       t.string :company_name
       t.decimal :last_traded_price, precision: 10, scale: 2
       t.integer :quantity

@@ -7,7 +7,7 @@
 #  last_traded_price :decimal(10, 2)
 #  logo              :string
 #  quantity          :integer
-#  ticker            :string
+#  ticker            :string           not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

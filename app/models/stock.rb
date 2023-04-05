@@ -9,14 +9,19 @@
 #  last_traded_price :decimal(10, 2)
 #  logo              :string
 #  quantity          :integer
-#  ticker            :string
+#  ticker            :string           not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
-# app/models/stock.rb
 class Stock < ApplicationRecord
+  scope :find_id_by_ticker, ->(ticker) { where('ticker = ?', ticker).pluck(:id)[0] }
+
   def iex_api_key
     ENV['IEX_API_PUBLISHABLE_TOKEN']
+  end
+
+  def self.find_first
+    :stocks_id == 1
   end
 
   def self.quote(ticker)
@@ -44,7 +49,6 @@ class Stock < ApplicationRecord
   end
 
   def self.quote_all(limit)
-    start_time = Time.now
     batch = limit(limit).pluck(:ticker).join(',')
 
     api_data = { key: ENV['IEX_API_PUBLISHABLE_TOKEN'] }

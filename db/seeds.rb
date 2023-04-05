@@ -52,3 +52,91 @@ def stock_dataset
 end
 
 stock_dataset
+
+Order.create!(
+  price: 123.08,
+  quantity: 80,
+  status: 'placed',
+  category: 'buy',
+  stocks_id: 1
+)
+
+Order.create!(
+  price: 40.33,
+  quantity: 10,
+  status: 'placed',
+  category: 'buy',
+  stocks_id: 2
+)
+
+Order.create!(
+  price: 23,
+  quantity: 30,
+  status: 'placed',
+  category: 'buy',
+  stocks_id: 3
+)
+
+Order.create!(
+  price: 1.2,
+  quantity: 800,
+  status: 'placed',
+  category: 'buy',
+  stocks_id: 8
+)
+
+Order.create!(
+  price: 20,
+  quantity: 60,
+  status: 'placed',
+  category: 'buy',
+  stocks_id: 600
+)
+
+Order.create!(
+  price: 20,
+  quantity: 50,
+  status: 'placed',
+  category: 'buy',
+  stocks_id: 600
+)
+
+Order.create!(
+  price: 15.5,
+  quantity: 10,
+  status: 'placed',
+  category: 'buy',
+  stocks_id: 599
+)
+
+Order.create!(
+  price: 15.99,
+  quantity: 18,
+  status: 'placed',
+  category: 'buy',
+  stocks_id: 599
+)
+
+Order.create!(
+  price: 123.08,
+  quantity: 8,
+  status: 'placed',
+  category: 'sell',
+  stocks_id: 3
+)
+
+Order.create!(
+  price: 123.08,
+  quantity: 8,
+  status: 'fulfilled',
+  category: 'buy',
+  stocks_id: 3
+)
+
+Order.create!(
+  price: 123.08,
+  quantity: 80,
+  status: 'placed',
+  category: 'buy',
+  stocks_id: 1
+)

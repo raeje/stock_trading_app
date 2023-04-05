@@ -10,12 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_04_072512) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_04_131327) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "orders", force: :cascade do |t|
+    t.string "status", null: false
+    t.string "category", null: false
+    t.integer "quantity", null: false
+    t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
+    t.datetime "expiry_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "stocks_id"
+    t.index ["stocks_id"], name: "index_orders_on_stocks_id"
+  end
+
   create_table "stocks", force: :cascade do |t|
-    t.string "ticker"
+    t.string "ticker", null: false
     t.string "company_name"
     t.decimal "last_traded_price", precision: 10, scale: 2
     t.integer "quantity"
@@ -37,4 +49,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_04_072512) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "orders", "stocks", column: "stocks_id"
 end
