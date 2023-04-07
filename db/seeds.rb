@@ -8,6 +8,9 @@
 
 require 'rest-client'
 
+start_time = Time.now
+p 'Seeding Users..'
+
 admin = User.create!(
   name: 'Vito Corleone',
   email: 'vito@godfather.com',
@@ -38,6 +41,11 @@ trader_sonny = User.create!(
   token: ''
 )
 
+p "elapsed: #{Time.now - start_time}"
+
+start_time = Time.now
+p 'Seeding Stocks..'
+
 def iex_api_key
   ENV['IEX_API_PUBLISHABLE_TOKEN']
 end
@@ -52,6 +60,11 @@ def stock_dataset
 end
 
 stock_dataset
+
+p "elapsed: #{Time.now - start_time}"
+
+start_time = Time.now
+p 'Seeding Orders..'
 
 Order.create!(
   price: 123.08,
@@ -90,7 +103,7 @@ Order.create!(
   quantity: 60,
   status: 'placed',
   category: 'buy',
-  stocks_id: 600
+  stocks_id: 321
 )
 
 Order.create!(
@@ -98,7 +111,7 @@ Order.create!(
   quantity: 50,
   status: 'placed',
   category: 'buy',
-  stocks_id: 600
+  stocks_id: 321
 )
 
 Order.create!(
@@ -106,7 +119,7 @@ Order.create!(
   quantity: 10,
   status: 'placed',
   category: 'buy',
-  stocks_id: 599
+  stocks_id: 123
 )
 
 Order.create!(
@@ -114,7 +127,7 @@ Order.create!(
   quantity: 18,
   status: 'placed',
   category: 'buy',
-  stocks_id: 599
+  stocks_id: 300
 )
 
 Order.create!(
@@ -140,3 +153,5 @@ Order.create!(
   category: 'buy',
   stocks_id: 1
 )
+
+p "elapsed: #{Time.now - start_time}"
