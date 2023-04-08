@@ -16,6 +16,9 @@ Rails.application.routes.draw do
       # Authentication
       post 'signup' => 'authentication#signup'
       put 'login' => 'authentication#login'
+
+      # Orders
+      post 'orders/new' => 'orders#create'
     end
   end
 end

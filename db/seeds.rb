@@ -17,7 +17,7 @@ admin = User.create!(
   password: 'vitocorleone',
   role: 'admin',
   is_approved: true,
-  balance: 9999999.99,
+  balance: 9_999_999.99,
   token: ''
 )
 
@@ -27,7 +27,7 @@ trader_michael = User.create!(
   password: 'michaelcorleone',
   role: 'trader',
   is_approved: true,
-  balance: 10000.00,
+  balance: 10_000.00,
   token: ''
 )
 
@@ -37,7 +37,17 @@ trader_sonny = User.create!(
   password: 'sonnycorleone',
   role: 'trader',
   is_approved: true,
-  balance: 30123.08,
+  balance: 30_123.08,
+  token: ''
+)
+
+trader_sonny = User.create!(
+  name: 'Fredo Corleone',
+  email: 'fredo@godfather.com',
+  password: 'fredocorleone',
+  role: 'trader',
+  is_approved: true,
+  balance: 3.33,
   token: ''
 )
 
@@ -71,7 +81,8 @@ Order.create!(
   quantity: 80,
   status: 'placed',
   category: 'buy',
-  stocks_id: 1
+  stocks_id: 1,
+  users_id: 4
 )
 
 Order.create!(
@@ -79,7 +90,8 @@ Order.create!(
   quantity: 10,
   status: 'placed',
   category: 'buy',
-  stocks_id: 2
+  stocks_id: 2,
+  users_id: 2
 )
 
 Order.create!(
@@ -87,7 +99,8 @@ Order.create!(
   quantity: 30,
   status: 'placed',
   category: 'buy',
-  stocks_id: 3
+  stocks_id: 3,
+  users_id: 3
 )
 
 Order.create!(
@@ -95,7 +108,9 @@ Order.create!(
   quantity: 800,
   status: 'placed',
   category: 'buy',
-  stocks_id: 8
+  stocks_id: 8,
+  users_id: 4,
+  users_id: 2
 )
 
 Order.create!(
@@ -103,7 +118,9 @@ Order.create!(
   quantity: 60,
   status: 'placed',
   category: 'buy',
-  stocks_id: 321
+  stocks_id: 321,
+  users_id: 3,
+  users_id: 3
 )
 
 Order.create!(
@@ -111,7 +128,9 @@ Order.create!(
   quantity: 50,
   status: 'placed',
   category: 'buy',
-  stocks_id: 321
+  stocks_id: 321,
+  users_id: 2,
+  users_id: 4
 )
 
 Order.create!(
@@ -119,7 +138,8 @@ Order.create!(
   quantity: 10,
   status: 'placed',
   category: 'buy',
-  stocks_id: 123
+  stocks_id: 123,
+  users_id: 4
 )
 
 Order.create!(
@@ -127,7 +147,8 @@ Order.create!(
   quantity: 18,
   status: 'placed',
   category: 'buy',
-  stocks_id: 300
+  stocks_id: 300,
+  users_id: 8
 )
 
 Order.create!(
@@ -135,7 +156,8 @@ Order.create!(
   quantity: 8,
   status: 'placed',
   category: 'sell',
-  stocks_id: 3
+  stocks_id: 3,
+  users_id: 3
 )
 
 Order.create!(
@@ -143,7 +165,8 @@ Order.create!(
   quantity: 8,
   status: 'fulfilled',
   category: 'buy',
-  stocks_id: 3
+  stocks_id: 3,
+  users_id: 2
 )
 
 Order.create!(
@@ -151,7 +174,8 @@ Order.create!(
   quantity: 80,
   status: 'placed',
   category: 'buy',
-  stocks_id: 1
+  stocks_id: 1,
+  users_id: 3
 )
 
 p "elapsed: #{Time.now - start_time}"

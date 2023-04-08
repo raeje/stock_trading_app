@@ -12,19 +12,24 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  stocks_id    :bigint
+#  users_id     :bigint
 #
 # Indexes
 #
 #  index_orders_on_stocks_id  (stocks_id)
+#  index_orders_on_users_id   (users_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (stocks_id => stocks.id)
+#  fk_rails_...  (users_id => users.id)
 #
 class Order < ApplicationRecord
   scope :placed, -> { where(status: 'placed') }
   scope :placed_buy, -> { placed.where(category: 'buy') }
   scope :placed_sell, -> { placed.where(category: 'sell') }
+
+  validates(:category, :price, :quantity, :status, :stocks_id, :users_id, presence: true)
 
   def self.fulfill(price)
     # Find buy orders

@@ -31,4 +31,10 @@ class ApplicationController < ActionController::Base
 
     render(json: { errors: ['Account not authorized to perform this action.'] }, status: :unauthorized)
   end
+
+  def authorize_trader_action
+    return if @current_user.role == 'trader' && @current_user.is_approved
+
+    render(json: { errors: ['Account not authorized to perform this action.'] }, status: :unauthorized)
+  end
 end
