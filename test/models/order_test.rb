@@ -2,15 +2,16 @@
 #
 # Table name: orders
 #
-#  id          :bigint           not null, primary key
-#  category    :string           not null
-#  expiry_date :datetime
-#  price       :decimal(10, 2)   default(0.0), not null
-#  quantity    :integer          not null
-#  status      :string           not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  stocks_id   :bigint
+#  id           :bigint           not null, primary key
+#  category     :string           not null
+#  expiry_date  :datetime
+#  price        :decimal(10, 2)   default(0.0), not null
+#  quantity     :integer          not null
+#  status       :string           not null
+#  traded_price :decimal(10, 2)   default(0.0), not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  stocks_id    :bigint
 #
 # Indexes
 #

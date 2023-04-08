@@ -30,6 +30,13 @@ class Stock < ApplicationRecord
     JSON.parse(quote)[0]
   end
 
+  def self.batch_quote(limit, offset)
+    batch = URI.encode_uri_component(limit(limit).offset(offset).pluck(:ticker).join(','))
+    api_data = { key: ENV['IEX_API_PUBLISHABLE_TOKEN'] }
+    quote = RestClient.get("https://api.iex.cloud/v1/data/core/quote/#{batch}?token=#{api_data[:key]}")
+    JSON.parse(quote)
+  end
+
   def self.latest_price(ticker)
     start_time = Time.now
     api_data = { key: ENV['IEX_API_PUBLISHABLE_TOKEN'] }

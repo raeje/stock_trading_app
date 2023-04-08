@@ -5,6 +5,7 @@ class CreateOrders < ActiveRecord::Migration[7.0]
       t.string :category, null: false
       t.integer :quantity, null: false
       t.decimal :price, default: 0.0, precision: 10, scale: 2, null: false
+      t.decimal :traded_price, default: 0.0, precision: 10, scale: 2, null: false
       t.datetime :expiry_date
       t.timestamps
     end
