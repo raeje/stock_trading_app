@@ -27,7 +27,7 @@ trader_michael = User.create!(
   password: 'michaelcorleone',
   role: 'trader',
   is_approved: true,
-  balance: 10_000.00,
+  balance: 100_000.00,
   token: ''
 )
 
@@ -37,17 +37,17 @@ trader_sonny = User.create!(
   password: 'sonnycorleone',
   role: 'trader',
   is_approved: true,
-  balance: 30_123.08,
+  balance: 308_123.08,
   token: ''
 )
 
-trader_sonny = User.create!(
+trader_fredo = User.create!(
   name: 'Fredo Corleone',
   email: 'fredo@godfather.com',
   password: 'fredocorleone',
   role: 'trader',
   is_approved: true,
-  balance: 3.33,
+  balance: 33_333.33,
   token: ''
 )
 
@@ -77,12 +77,12 @@ start_time = Time.now
 p 'Seeding Orders..'
 
 Order.create!(
-  price: 123.08,
-  quantity: 80,
+  price: 100,
+  quantity: 3,
   status: 'placed',
   category: 'buy',
   stocks_id: 1,
-  users_id: 4
+  users_id: 2
 )
 
 Order.create!(
@@ -90,7 +90,16 @@ Order.create!(
   quantity: 10,
   status: 'placed',
   category: 'buy',
-  stocks_id: 2,
+  stocks_id: 1,
+  users_id: 2
+)
+
+Order.create!(
+  price: 100,
+  quantity: 3,
+  status: 'placed',
+  category: 'buy',
+  stocks_id: 1,
   users_id: 2
 )
 
@@ -109,8 +118,7 @@ Order.create!(
   status: 'placed',
   category: 'buy',
   stocks_id: 8,
-  users_id: 4,
-  users_id: 2
+  users_id: 4
 )
 
 Order.create!(
@@ -119,7 +127,6 @@ Order.create!(
   status: 'placed',
   category: 'buy',
   stocks_id: 321,
-  users_id: 3,
   users_id: 3
 )
 
@@ -129,8 +136,7 @@ Order.create!(
   status: 'placed',
   category: 'buy',
   stocks_id: 321,
-  users_id: 2,
-  users_id: 4
+  users_id: 2
 )
 
 Order.create!(
@@ -148,14 +154,14 @@ Order.create!(
   status: 'placed',
   category: 'buy',
   stocks_id: 300,
-  users_id: 8
+  users_id: 2
 )
 
 Order.create!(
   price: 123.08,
   quantity: 8,
   status: 'placed',
-  category: 'sell',
+  category: 'buy',
   stocks_id: 3,
   users_id: 3
 )
@@ -163,7 +169,7 @@ Order.create!(
 Order.create!(
   price: 123.08,
   quantity: 8,
-  status: 'fulfilled',
+  status: 'placed',
   category: 'buy',
   stocks_id: 3,
   users_id: 2

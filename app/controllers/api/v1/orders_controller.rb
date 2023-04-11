@@ -8,8 +8,8 @@ module Api
       before_action :authorize_request
       before_action :authorize_trader_action, only: %i[create]
 
+      # POST /api/v1/orders/new
       def create
-        # @order = Order.new(params[:category], params[:price], status: 'placed')
         @order = Order.new(create_params)
 
         if @order.save
@@ -19,10 +19,21 @@ module Api
         end
       end
 
+      # PATCH /api/v1/orders/update/:id
+      def update
+        @order = Order.find(params[:id])
+
+        if @order.update(order_params)
+          render(json: { message: 'Order updated!' })
+        else
+          render(json: { errors: @order.errors }, status: :unprocessable_entity)
+        end
+      end
+
       private
 
       def order_params
-        params.permit(:category, :price, :expiry_date, :user_id, :stock_id)
+        params.permit(:category, :price, :status, :expiry_date)
       end
 
       def create_params

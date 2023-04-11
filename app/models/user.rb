@@ -24,6 +24,12 @@ class User < ApplicationRecord
   validates(:email, presence: true, uniqueness: true)
   validates(:password, presence: true, on: :create)
 
+  # [dev]
+  def info
+    p "user: #{id} balance: #{balance.to_f}"
+    p Portfolio.where(users_id: id)
+  end
+
   def self.encrypt_password(user_params)
     password_hash = Password.create(user_params[:password])
     create(email: user_params[:email], password: password_hash)

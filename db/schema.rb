@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_08_114103) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_09_024440) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,6 +27,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_114103) do
     t.bigint "users_id", null: false
     t.index ["stocks_id"], name: "index_orders_on_stocks_id"
     t.index ["users_id"], name: "index_orders_on_users_id"
+  end
+
+  create_table "portfolios", force: :cascade do |t|
+    t.integer "total_quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "users_id", null: false
+    t.bigint "stocks_id"
+    t.bigint "orders_id"
+    t.index ["orders_id"], name: "index_portfolios_on_orders_id"
+    t.index ["stocks_id"], name: "index_portfolios_on_stocks_id"
+    t.index ["users_id"], name: "index_portfolios_on_users_id"
   end
 
   create_table "stocks", force: :cascade do |t|
@@ -54,4 +66,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_114103) do
 
   add_foreign_key "orders", "stocks", column: "stocks_id"
   add_foreign_key "orders", "users", column: "users_id"
+  add_foreign_key "portfolios", "orders", column: "orders_id"
+  add_foreign_key "portfolios", "stocks", column: "stocks_id"
+  add_foreign_key "portfolios", "users", column: "users_id"
 end

@@ -11,8 +11,8 @@
 #  traded_price :decimal(10, 2)   default(0.0), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  stocks_id    :bigint
-#  users_id     :bigint
+#  stocks_id    :bigint           not null
+#  users_id     :bigint           not null
 #
 # Indexes
 #
