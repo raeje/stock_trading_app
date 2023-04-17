@@ -45,6 +45,7 @@ class BatchStockQuoteJob
     stocks.each do |stock|
       counter += 1
       stocks_id = Stock.find_id_by_ticker(stock['symbol'])
+      Stock.find(stocks_id).update(last_traded_price: stock['latestPrice'])
       price = stock['latestPrice']
 
       buy_orders, sell_orders = fulfill_orders(stocks_id, price)

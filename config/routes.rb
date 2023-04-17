@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       get 'users' => 'users#index'
       patch 'users/update/:id' => 'users#update'
       post 'users/new' => 'users#create'
+      get 'users/portfolio' => 'users#portfolio'
+      get 'users/me' => 'users#me'
 
       # Authentication
       post 'signup' => 'authentication#signup'
@@ -19,6 +21,9 @@ Rails.application.routes.draw do
 
       # Orders
       post 'orders/new' => 'orders#create'
+
+      # Stocks
+      get 'stocks/:id' => 'stocks#show'
     end
   end
 end

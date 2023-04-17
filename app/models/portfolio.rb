@@ -23,6 +23,8 @@
 #  fk_rails_...  (users_id => users.id)
 #
 class Portfolio < ApplicationRecord
+  has_many :stocks
+
   scope :owned_by, ->(users_id) { where('users_id = ?', users_id) }
 
   # attr_accessor :total_quantity

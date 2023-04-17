@@ -13,7 +13,7 @@ module Api
         render json: { users: @users }
       end
 
-      # PATCH /api/v1/update/:id
+      # PATCH /api/v1/users/update/:id
       def update
         @user = User.find(params[:id])
         if @user.update(user_params)
@@ -32,6 +32,20 @@ module Api
         else
           render(json: { errors: @user.errors }, status: :unprocessable_entity)
         end
+      end
+
+      # GET /api/v1/users/portfolio/
+      def portfolio
+        @portfolio = Portfolio.summary(@current_user.id).joins('FULL JOIN "stocks" ON "stocks"."id" = "stocks_id"').select('portfolios.*,stocks.*')
+        # todo: connect portfolio with stock
+        # todo: return stock with portfolio.total_quantity
+        render(json: { data: @portfolio })
+      end
+
+      # GET /api/v1/users/me
+      def me
+        @user = User.find(@current_user.id)
+        render(json: { data: @user })
       end
 
       private

@@ -127,6 +127,7 @@ class Order < ApplicationRecord
   end
 
   def update_related_tables
+    # return unless status_changed?
     # Portfolio updates
     update_when_fulfilled_buy_or_cancelled_sell
     update_when_placed_sell
