@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       post 'orders/new' => 'orders#create'
 
       # Stocks
+      get 'stocks/' => 'stocks#index'
       get 'stocks/:id' => 'stocks#show'
     end
   end

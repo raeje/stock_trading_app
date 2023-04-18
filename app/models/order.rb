@@ -42,11 +42,17 @@ class Order < ApplicationRecord
   # [prod] for background updates
   def self.fulfill(price)
     # Find buy orders
-    buy = placed_buy.where(['price <= ?', price])
-    buy.update_all(status: 'fulfilled', traded_price: price)
+    buy = placed_buy.where(['price >= ?', price])
+    buy.each do |buy_order|
+      buy_order.update(status: 'fulfilled', traded_price: price)
+    end
+    # buy.update_all(status: 'fulfilled', traded_price: price)
 
-    sell = placed_sell.where(['price >= ?', price])
-    sell.update_all(status: 'fulfilled', traded_price: price)
+    sell = placed_sell.where(['price <= ?', price])
+    sell.each do |sell_order|
+      sell_order.update(status: 'fulfilled', traded_price: price)
+    end
+    # sell.update_all(status: 'fulfilled', traded_price: price)
   end
 
   # [dev]

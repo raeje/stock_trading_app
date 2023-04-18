@@ -8,10 +8,16 @@ module Api
       before_action :authorize_request
       before_action :authorize_trader_action, only: %i[create]
 
+      # GET /api/v1/stocks/
+      def index
+        @stock = Stock.all
+        render(json: { data: @stock })
+      end
+
       # GET /api/v1/stocks/:id
       def show
         @stock = Stock.find(params[:id])
-        render(json: { stock: @stock })
+        render(json: { data: @stock })
       end
     end
   end
