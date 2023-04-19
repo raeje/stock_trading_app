@@ -42,6 +42,12 @@ module Api
         render(json: { data: @portfolio })
       end
 
+      # GET /api/v1/users/orders/
+      def my_orders
+        @orders = Order.where(users_id: @current_user.id).joins('FULL JOIN "stocks" ON "stocks"."id" = "stocks_id"').select('orders.*,stocks.company_name')
+        render(json: { data: @orders })
+      end
+
       # GET /api/v1/users/me
       def me
         @user = User.find(@current_user.id)

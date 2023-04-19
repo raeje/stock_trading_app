@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       patch 'users/update/:id' => 'users#update'
       post 'users/new' => 'users#create'
       get 'users/portfolio' => 'users#portfolio'
+      get 'users/orders' => 'users#my_orders'
       get 'users/me' => 'users#me'
 
       # Authentication
