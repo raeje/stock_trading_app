@@ -19,6 +19,8 @@ module Api
         @user = User.new({ email: params[:email], password: params[:password] })
         if params[:password] == params[:password_confirmation]
           if @user.save
+            # Send an email after creation of new user
+            UserSignupMailer.welcome_email(@user).deliver_now
             # Create new User record with encrypted password
             @user = User.encrypt_password(user_params)
             render(json: { message: ['Account created.'] }, status: :created)
