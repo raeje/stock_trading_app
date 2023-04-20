@@ -16,7 +16,10 @@ module Api
       # Register new user
       def signup
         # Create new User object
-        @user = User.new({ email: params[:email], password: params[:password] })
+        @user = User.new(user_params)
+        p '=================================================='
+        p user_params
+        p '=================================================='
         if params[:password] == params[:password_confirmation]
           if @user.save
             # Send an email after creation of new user
@@ -39,7 +42,7 @@ module Api
 
         # Check if email or password is empty
         if params[:email].to_s.empty? || params[:password].to_s.empty?
-          return(render(json: { errors: ['Email and password can\'t be blank']}, status: :unauthorized))
+          return(render(json: { errors: ['Email and password can\'t be blank'] }, status: :unauthorized))
         end
 
         # Check if user is found on the db
@@ -68,7 +71,7 @@ module Api
       private
 
       def user_params
-        params.permit(:email, :password)
+        params.permit(:name, :email, :password, :password_confirmation, :role)
       end
     end
   end
