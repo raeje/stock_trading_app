@@ -26,12 +26,12 @@ module Api
             UserSignupMailer.welcome_email(@user).deliver_now
             # Create new User record with encrypted password
             @user = User.encrypt_password(user_params)
-            render(json: { message: ['Account created.'] }, status: :created)
+            render(json: { message: 'Account created.' }, status: :created)
           else
             render(json: { errors: @user.errors }, status: :unprocessable_entity)
           end
         else
-          render(json: { errors: { password: ['Passwords do not match.'] } }, status: :unprocessable_entity)
+          render(json: { errors: { password: ['do not match.'] } }, status: :unprocessable_entity)
         end
       end
 
@@ -42,17 +42,17 @@ module Api
 
         # Check if email or password is empty
         if params[:email].to_s.empty? || params[:password].to_s.empty?
-          return(render(json: { errors: ['Email and password can\'t be blank'] }, status: :unauthorized))
+          return(render(json: { errors: 'Email and password can\'t be blank' }, status: :unauthorized))
         end
 
         # Check if user is found on the db
         if !@user
-          return render(json: { errors: [{ message: 'User not found.' }] }, status: :unauthorized)
+          return render(json: { errors: 'User not found.' }, status: :unauthorized)
         end
 
         # Check if user is approved
         if @user.is_approved == false
-          return render(json: { errors: [{ message: 'Pending approval.' }] }, status: :unauthorized)
+          return render(json: { errors: 'Pending approval.' }, status: :unauthorized)
         end
 
         # Check if password is correct using BCrypt
@@ -64,7 +64,7 @@ module Api
                          email: @user.email },
                  status: :ok)
         else
-          render(json: { errors: ['Incorrect password. Please try again.'], status: :unauthorized })
+          render(json: { errors: 'Incorrect password. Please try again.' }, status: :unauthorized)
         end
       end
 
