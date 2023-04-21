@@ -26,7 +26,6 @@ class User < ApplicationRecord
   validates(:password, presence: true, on: :create)
 
   before_update :update_balance_for_new_trader, :send_email_before_approval
-  # after_update :send_email_before_approval
 
   # [dev]
   def info

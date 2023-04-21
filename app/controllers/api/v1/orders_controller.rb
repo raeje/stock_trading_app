@@ -7,6 +7,13 @@ module Api
       protect_from_forgery with: :null_session
       before_action :authorize_request
       before_action :authorize_trader_action, only: %i[create]
+      before_action :authorize_admin_action, only: %i[index]
+
+      # GET /api/v1/orders
+      def index
+        @orders = Order.all.joins('LEFT JOIN "stocks" ON "stocks"."id" = "stocks_id"').select('orders.*,stocks.company_name')
+        render(json: { data: @orders })
+      end
 
       # POST /api/v1/orders/new
       def create

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       put 'login' => 'authentication#login'
 
       # Orders
+      get 'orders' => 'orders#index'
       post 'orders/new' => 'orders#create'
 
       # Stocks
