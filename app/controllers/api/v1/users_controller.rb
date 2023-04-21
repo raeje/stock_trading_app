@@ -6,11 +6,11 @@ module Api
     class UsersController < ApplicationController
       protect_from_forgery with: :null_session
       before_action :authorize_request
-      before_action :authorize_admin_action, only: %i[update create]
+      before_action :authorize_admin_action, only: %i[update create index]
 
       def index
         @users = User.all
-        render json: { users: @users }
+        render json: { data: @users }
       end
 
       # PATCH /api/v1/users/update/:id

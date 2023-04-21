@@ -1,0 +1,24 @@
+<html>
+
+   <head>
+      <meta content = 'text/html; charset = UTF-8' http-equiv = 'Content-Type' />
+   </head>
+
+   <body>
+      <h1>Welcome to www.StrattonOakmont.com, <%= @user.name %></h1>
+
+      <p>
+         Your account registration has been approved. You can now access your <strong><%= @user.role.upcase %></strong> account with username: <%= @user.email %>. <br>
+
+         We're so excited to have you as part of Stratton Oakmont.
+         <% if @user.role.upcase == "TRADER" %>
+            We're glad you've chosen us, and we want to show our appreciation by giving you a special incentive. <br><br>
+
+            Here's <strong>$ <%= @user.balance %></strong> reward as registration bonus.
+         <% end %>
+      </p>
+
+      <p>Again, thanks for joining and have a great day!</p>
+
+   </body>
+</html>

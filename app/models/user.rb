@@ -20,14 +20,28 @@ class User < ApplicationRecord
   # Add methods to set and authenticate against a BCrypt password.
   has_secure_password
   include BCrypt
+  include ActiveModel::Dirty
 
   validates(:email, presence: true, uniqueness: true)
   validates(:password, presence: true, on: :create)
+
+  before_update :update_balance_for_new_trader, :send_email_before_approval
+  # after_update :send_email_before_approval
 
   # [dev]
   def info
     p "user: #{id} balance: #{balance.to_f}"
     p Portfolio.where(users_id: id)
+  end
+
+  def update_balance_for_new_trader
+    return unless role == 'trader'
+
+    self.balance = 3000 if is_approved_changed?
+  end
+
+  def send_email_before_approval
+    UserApprovedMailer.approved_email(self).deliver_now if is_approved_changed?
   end
 
   def self.encrypt_password(user_params)
