@@ -67,7 +67,6 @@ class BatchStockQuoteJob
   end
 
   def iex_latest_price(offset_count)
-    # batch = Stock.quote_all(BATCH_QUOTE_LIMIT)
     batch = Stock.batch_quote(BATCH_QUOTE_LIMIT, offset_count)
     batch.reject { |stock| stock['latestPrice'].nil? }
   end

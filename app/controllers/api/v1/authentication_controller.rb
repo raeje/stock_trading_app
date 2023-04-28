@@ -17,9 +17,7 @@ module Api
       def signup
         # Create new User object
         @user = User.new(user_params)
-        p '=================================================='
-        p user_params
-        p '=================================================='
+
         if params[:password] == params[:password_confirmation]
           if @user.save
             # Send an email after creation of new user
@@ -45,15 +43,11 @@ module Api
           return(render(json: { errors: 'Email and password can\'t be blank' }, status: :unauthorized))
         end
 
-        # Check if user is found on the db
-        if !@user
-          return render(json: { errors: 'User not found.' }, status: :unauthorized)
-        end
+        # Check if user is exists
+        return render(json: { errors: 'User not found.' }, status: :not_found) unless @user
 
         # Check if user is approved
-        if @user.is_approved == false
-          return render(json: { errors: 'Pending approval.' }, status: :unauthorized)
-        end
+        return render(json: { errors: 'Pending approval.' }, status: :not_found) if @user.is_approved == false
 
         # Check if password is correct using BCrypt
         if @user&.authenticate(params[:password])
@@ -64,14 +58,14 @@ module Api
                          email: @user.email },
                  status: :ok)
         else
-          render(json: { errors: 'Incorrect password. Please try again.' }, status: :unauthorized)
+          render(json: { errors: 'Incorrect password. Please try again.' }, status: :not_found)
         end
       end
 
       private
 
       def user_params
-        params.permit(:name, :email, :password, :password_confirmation, :role)
+        params.permit(:name, :email, :password, :password_confirmation, :role, :is_approved)
       end
     end
   end

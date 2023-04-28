@@ -27,12 +27,6 @@ class User < ApplicationRecord
 
   before_update :update_balance_for_new_trader, :send_email_before_approval
 
-  # [dev]
-  def info
-    p "user: #{id} balance: #{balance.to_f}"
-    p Portfolio.where(users_id: id)
-  end
-
   def update_balance_for_new_trader
     return unless role == 'trader'
 

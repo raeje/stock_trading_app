@@ -27,10 +27,7 @@ class Portfolio < ApplicationRecord
 
   scope :owned_by, ->(users_id) { where('users_id = ?', users_id) }
 
-  # attr_accessor :total_quantity
-
   def self.summary(users_id)
-    p User.find(users_id).balance
     where(users_id:)
   end
 end

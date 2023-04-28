@@ -28,7 +28,7 @@ module Api
         @user = User.new(user_params)
 
         if @user.save
-          render(json: { message: "User #{@user.email} created!" })
+          render(json: { message: "User #{@user.email} created!" }, status: :created)
         else
           render(json: { errors: @user.errors }, status: :unprocessable_entity)
         end
@@ -36,15 +36,17 @@ module Api
 
       # GET /api/v1/users/portfolio/
       def portfolio
-        @portfolio = Portfolio.summary(@current_user.id).joins('FULL JOIN "stocks" ON "stocks"."id" = "stocks_id"').select('portfolios.*,stocks.*')
-        # todo: connect portfolio with stock
-        # todo: return stock with portfolio.total_quantity
+        @portfolio = Portfolio.summary(@current_user.id)
+                              .joins('FULL JOIN "stocks" ON "stocks"."id" = "stocks_id"')
+                              .select('portfolios.*,stocks.*')
         render(json: { data: @portfolio })
       end
 
       # GET /api/v1/users/orders/
       def my_orders
-        @orders = Order.where(users_id: @current_user.id).joins('FULL JOIN "stocks" ON "stocks"."id" = "stocks_id"').select('orders.*,stocks.company_name')
+        @orders = Order.where(users_id: @current_user.id)
+                       .joins('FULL JOIN "stocks" ON "stocks"."id" = "stocks_id"')
+                       .select('orders.*,stocks.company_name')
         render(json: { data: @orders })
       end
 

@@ -30,7 +30,6 @@ class Order < ApplicationRecord
   validates(:category, :price, :quantity, :status, :stocks_id, :users_id, presence: true)
 
   validate :balance_cannot_be_less_than_total_price, :total_quantity_cannot_be_less_than_quantity, on: :create
-  # validate :fulfilled_order_cannot_be_modified, on: :update
 
   scope :placed, -> { where(status: 'placed') }
   scope :placed_buy, -> { placed.where(category: 'buy') }
@@ -40,38 +39,24 @@ class Order < ApplicationRecord
   after_update :update_related_tables
 
   # [prod] for background updates
-  def self.fulfill(price)
+  def self.fulfill(current_price)
     # Find buy orders
-    buy = placed_buy.where(['price >= ?', price])
+    buy = placed_buy.where(['price >= ?', current_price])
     buy.each do |buy_order|
-      buy_order.update(status: 'fulfilled', traded_price: price)
+      buy_order.update(status: 'fulfilled', traded_price: current_price)
     end
-    # buy.update_all(status: 'fulfilled', traded_price: price)
 
-    sell = placed_sell.where(['price <= ?', price])
+    sell = placed_sell.where(['price <= ?', current_price])
     sell.each do |sell_order|
-      sell_order.update(status: 'fulfilled', traded_price: price)
+      sell_order.update(status: 'fulfilled', traded_price: current_price)
     end
-    # sell.update_all(status: 'fulfilled', traded_price: price)
-  end
-
-  # [dev]
-  def fulfill
-    update(status: 'fulfilled')
-  end
-
-  # Throw error if
-  # user is updating a fulfilled order
-  def fulfilled_order_cannot_be_modified
-    status_changed_to_fulfilled = status_previously_changed?(from: 'fulfilled', to: 'placed')
-    errors.add(:status, "can't modify fulfilled orders") if status_changed_to_fulfilled
   end
 
   # Throw error if
   # BUY and User.balance < Order.quantity * Order.price
   def balance_cannot_be_less_than_total_price
     user = User.find(users_id)
-    if user.balance < (quantity * price) && category == 'buy'
+    if user.balance < (quantity * price) && buy?
       errors.add(:balance, "can't be less than total price")
     end
   end
@@ -79,11 +64,11 @@ class Order < ApplicationRecord
   # Throw error if
   # SELL and Portfolio.total_quantity < Order.quantity
   def total_quantity_cannot_be_less_than_quantity
-    return unless category == 'sell'
+    return unless sell?
 
     portfolio_stocks = Portfolio.where(users_id:, stocks_id:).limit(1)[0]
     total_quantity = portfolio_stocks.nil? ? 0 : portfolio_stocks.total_quantity
-    if total_quantity < quantity && category == 'sell'
+    if total_quantity < quantity && sell?
       errors.add(:total_quantity, "can't be less than order quantity")
     end
   end
@@ -91,7 +76,7 @@ class Order < ApplicationRecord
   # PLACED SELL
   # update portfolio -
   def update_when_placed_sell
-    return unless placed && sell
+    return unless placed? && sell?
 
     total_quantity = portfolio_stocks.total_quantity - quantity
     portfolio_stocks.update(total_quantity:)
@@ -101,7 +86,7 @@ class Order < ApplicationRecord
   # CANCELLED SELL
   # update portfolio +
   def update_when_fulfilled_buy_or_cancelled_sell
-    return unless (buy && fulfilled) || (sell && cancelled)
+    return unless (buy? && fulfilled?) || (sell? && cancelled?)
 
     if portfolio_stocks.nil?
       Portfolio.create!(stocks_id:, users_id:, total_quantity: quantity)
@@ -114,7 +99,7 @@ class Order < ApplicationRecord
   # PLACED BUY
   # update balance -
   def update_when_placed_buy
-    return unless placed && buy
+    return unless placed? && buy?
 
     user = User.find(users_id)
     total_price = quantity * price
@@ -125,7 +110,7 @@ class Order < ApplicationRecord
   # CANCELLED BUY
   # update balance +
   def update_when_fulfilled_sell_or_cancelled_buy
-    return unless (fulfilled && sell) || (cancelled && buy)
+    return unless (fulfilled? && sell?) || (cancelled? && buy?)
 
     user = User.find(users_id)
     total_price = quantity * price
@@ -141,8 +126,6 @@ class Order < ApplicationRecord
     # User balance updates
     update_when_fulfilled_sell_or_cancelled_buy
     update_when_placed_buy
-
-    User.find(users_id).info
   end
 
   private
@@ -151,23 +134,23 @@ class Order < ApplicationRecord
     Portfolio.where(users_id:, stocks_id:).limit(1)[0]
   end
 
-  def sell
+  def sell?
     category == 'sell'
   end
 
-  def buy
+  def buy?
     category == 'buy'
   end
 
-  def placed
+  def placed?
     status == 'placed'
   end
 
-  def fulfilled
+  def fulfilled?
     status == 'fulfilled'
   end
 
-  def cancelled
+  def cancelled?
     status == 'cancelled'
   end
 end

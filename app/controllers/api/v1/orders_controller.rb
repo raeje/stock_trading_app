@@ -20,31 +20,32 @@ module Api
         @order = Order.new(create_params)
 
         if @order.save
-          render(json: { message: 'Order created!' })
+          render(json: { order: @order, message: 'Order created!' }, status: :created)
         else
           render(json: { errors: @order.errors }, status: :unprocessable_entity)
         end
       end
 
       # PATCH /api/v1/orders/update/:id
+=begin
       def update
         @order = Order.find(params[:id])
 
         if @order.update(order_params)
-          render(json: { message: 'Order updated!' })
+          render(json: { message: 'Order updated!' }, status: :ok)
         else
           render(json: { errors: @order.errors }, status: :unprocessable_entity)
         end
       end
+=end
 
       private
 
-      def order_params
-        params.permit(:category, :price, :status, :expiry_date)
-      end
+      # def order_params
+      #   params.permit(:category, :price, :status, :expiry_date)
+      # end
 
       def create_params
-        p @current_user
         params.permit(:category, :price, :quantity, :status, :stocks_id, :users_id)
               .with_defaults(quantity: 1, status: 'placed', users_id: @current_user.id)
       end

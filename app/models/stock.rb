@@ -14,20 +14,8 @@
 #  updated_at        :datetime         not null
 #
 class Stock < ApplicationRecord
-  # scope :find_id_by_ticker, ->(ticker) { where('ticker = ?', ticker).pluck(:id)[0] }
-
-  def iex_api_key
-    ENV['IEX_API_PUBLISHABLE_TOKEN']
-  end
-
   def self.find_id_by_ticker(ticker)
     where('ticker = ?', ticker).pluck(:id)[0]
-  end
-
-  def self.quote(ticker)
-    api_data = { key: ENV['IEX_API_PUBLISHABLE_TOKEN'] }
-    quote = RestClient.get("https://api.iex.cloud/v1/data/core/quote/#{ticker}?token=#{api_data[:key]}")
-    JSON.parse(quote)[0]
   end
 
   def self.batch_quote(limit, offset)
@@ -35,6 +23,18 @@ class Stock < ApplicationRecord
     api_data = { key: ENV['IEX_API_PUBLISHABLE_TOKEN'] }
     quote = RestClient.get("https://api.iex.cloud/v1/data/core/quote/#{batch}?token=#{api_data[:key]}")
     JSON.parse(quote)
+  end
+
+# delete
+=begin
+  def iex_api_key
+    ENV['IEX_API_PUBLISHABLE_TOKEN']
+  end
+
+  def self.quote(ticker)
+    api_data = { key: ENV['IEX_API_PUBLISHABLE_TOKEN'] }
+    quote = RestClient.get("https://api.iex.cloud/v1/data/core/quote/#{ticker}?token=#{api_data[:key]}")
+    JSON.parse(quote)[0]
   end
 
   def self.latest_price(ticker)
@@ -46,15 +46,6 @@ class Stock < ApplicationRecord
     { latest_price: ticker_quote['latestPrice'], elapsed: Time.now - start_time }
   end
 
-  def self.monitor_price(ticker, limit)
-    start_time = Time.now
-    for i in 1..limit do
-      p i
-      p latest_price(ticker)
-    end
-    { elapsed: Time.now - start_time }
-  end
-
   def self.quote_all(limit)
     batch = limit(limit).pluck(:ticker).join(',')
 
@@ -62,4 +53,5 @@ class Stock < ApplicationRecord
     quote = RestClient.get("https://api.iex.cloud/v1/data/core/quote/#{batch}?token=#{api_data[:key]}")
     JSON.parse(quote)
   end
+=end
 end

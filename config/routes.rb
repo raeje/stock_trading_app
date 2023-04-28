@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
       # Stocks
       get 'stocks/' => 'stocks#index'
+      post 'stocks/new' => 'stocks#create'
       get 'stocks/:id' => 'stocks#show'
     end
   end
